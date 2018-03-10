@@ -264,7 +264,7 @@ You start the temporary subscription by providing a block `within` which the sub
 
 <h2 id="async-handlers">Async handlers</h2>
 
-It's possible to also subscribe async handlers to events. Async handlers are just background jobs implemented with `ActiveJob`. However, you need to configure `RailsEventStore` to use `ActiveJobDispatcher`.
+It's possible to also subscribe async handlers to events. Async handlers are just background jobs implemented with `ActiveJob`.
 
 ```ruby
 class SendOrderEmail < ActiveJob::Base
@@ -274,12 +274,6 @@ class SendOrderEmail < ActiveJob::Base
     OrderMailer.notify_customer(email).deliver_now!
   end
 end
-
-event_store = RailsEventStore::Client.new(
-  event_broker: RailsEventStore::EventBroker.new(
-    dispatcher: RailsEventStore::ActiveJobDispatcher.new
-  )
-)
 
 event_store.subscribe(SendOrderEmail, to: [OrderPlaced])
 ```
